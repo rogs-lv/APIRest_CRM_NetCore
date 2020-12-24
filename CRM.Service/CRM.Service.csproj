@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CRM.DAO\CRM.DAO.csproj" />
+    <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
+    <ProjectReference Include="..\CRM.Utilities\CRM.Helpers.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CRM.Service\CRM.Service.csproj" />
+    <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
+    <ProjectReference Include="..\CRM.Utilities\CRM.Helpers.csproj" />
+    <ProjectReference Include="..\CRM.Entity\CRM.Entity.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+</Project>
