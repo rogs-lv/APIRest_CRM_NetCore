@@ -13,6 +13,12 @@ namespace CRM.Service
         public UriService(string baseUri) {
             this._baseUri = baseUri;
         }
+        /// <summary>
+        /// Create new Uri
+        /// </summary>
+        /// <param name="filter">filters to build new uri</param>
+        /// <param name="route">route to build new uri</param>
+        /// <returns></returns>
         public Uri GetPageUri(PaginationFilter filter, string route) {
             Uri _endPointUri = new Uri(string.Concat(_baseUri, route));
             string modifiedUri = QueryHelpers.AddQueryString(_endPointUri.ToString(), "pageNumber", filter.PageNumber.ToString());

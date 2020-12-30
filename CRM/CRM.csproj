@@ -3,6 +3,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.16.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 
@@ -16,6 +17,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <!-- 
+    Make sure documentation XML is also included when publishing (not only when testing)
+    see https://github.com/Azure/service-fabric-issues/issues/190
+    -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!--
+    To suppress warnings project-wide, define a semicolon-delimited list of warning codes to ignore in the project file. Appending the warning codes to $(NoWarn); applies the C# default values too.
+    -->
+    <NoWarn>$(NoWarn);1591</NoWarn>
+
   </PropertyGroup>
 
 

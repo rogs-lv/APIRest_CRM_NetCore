@@ -8,11 +8,13 @@ using CRM.Models;
 using CRM.Service.Interface;
 using CRM.Wrappers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers
 {
+    [EnableCors("CORS")]
     [Route("api/[controller]")]
     [ApiController]
     public class MasterDataController : ControllerBase
@@ -23,7 +25,13 @@ namespace CRM.Controllers
             this.masterService  = masterDtService;
             this.uriService     = uriService;
         }
-        
+        /// <summary>
+        /// Get specific item
+        /// </summary>
+        /// <param name="idItem">Id Item</param>
+        /// <param name="whsCode">Warehouse of item</param>
+        /// <param name="priceList">Price list of item</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetItem")]
         [Produces("application/json")]
@@ -36,12 +44,16 @@ namespace CRM.Controllers
             else
                 return NotFound("No se encontraron artículos");
         }
-        
+        /// <summary>
+        /// Get all items, specified pagination
+        /// </summary>
+        /// <param name="filter">filters of pagination</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetAllItems")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PagedResponse<List<Item>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(EmptyResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EmptyResult), StatusCodes.Status204NoContent)]
         public IActionResult GetAllItems([FromQuery] PaginationFilter filter) {
             PaginationFilter validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter.WhsCode, filter.PriceList);
             int countRows = 0;

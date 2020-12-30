@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CRM.DAO.DAO;
@@ -21,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace CRM
 {
@@ -77,6 +80,33 @@ namespace CRM
                     ValidateIssuerSigningKey = true
                 };
             });
+            //Documentation API
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API with JWT Login and some endpoints to DB SAP B1 (pagination)",
+                    Description = "A simple example ASP.NET Core Web API using pagination. The pagination was read in article of Mukesh Murugan https://codewithmukesh.com/blog/pagination-in-aspnet-core-webapi/",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Oliver Rosas González",
+                        Email = "oliverrosasg@gmail.com",
+                        Url = new Uri("https://twitter.com/spboyer"),
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+            //Custom CORS
+            services.AddCors(c => {
+                c.AddPolicy("CORS", builder =>
+                {
+                    builder.AllowAnyHeader()
+                    .WithOrigins(Configuration["AppSettings:Issuer"])
+                    .WithMethods("GET", "POST").Build();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,10 +116,19 @@ namespace CRM
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger(c => {
+                c.SerializeAsV2 = true;
+            });
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API with JWT with some endpoints to DB SAP B1 and pagination");
+            });
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -15,6 +15,11 @@ namespace CRM.Controllers
         public AuthenticationController(IAuthenticateService _auth) {
             auth = _auth;
         }
+        /// <summary>
+        /// Get authentication token
+        /// </summary>
+        /// <param name="user">user credentials</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [Produces("application/json")]

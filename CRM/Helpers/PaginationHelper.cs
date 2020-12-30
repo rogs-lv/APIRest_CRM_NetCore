@@ -10,6 +10,16 @@ namespace CRM.Helpers
 {
     public class PaginationHelper
     {
+        /// <summary>
+        /// Create response of type PagedResponse
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pagedData">rows or data returned</param>
+        /// <param name="validFilter">filters for include in uri</param>
+        /// <param name="totalRecords">total rows returned</param>
+        /// <param name="uriService">interface to create uri</param>
+        /// <param name="route">route of controller</param>
+        /// <returns>return response of type PagedResponse</returns>
         public static PagedResponse<List<T>> CreatePagedReponse<T>(List<T> pagedData, PaginationFilter validFilter, int totalRecords, IUriService uriService, string route)
         {
             var respose = new PagedResponse<List<T>>(pagedData, validFilter.PageNumber, validFilter.PageSize);

@@ -19,6 +19,13 @@ namespace CRM.DAO.DAO
             _logger = logger;
             dBAdapter = DBFactory.GetDefaultDBAdapter(config);
         }
+        /// <summary>
+        /// Get item specific
+        /// </summary>
+        /// <param name="idItem">id item</param>
+        /// <param name="whsCode">warehouse item</param>
+        /// <param name="priceList">price list item</param>
+        /// <returns>return data item of type Item</returns>
         public Item GetItem(string idItem, string whsCode, string priceList) {
             IDbConnection connection = dBAdapter.GetConnection();
             try
@@ -45,6 +52,12 @@ namespace CRM.DAO.DAO
                 }
             }
         }
+        /// <summary>
+        /// Get all items using pagination
+        /// </summary>
+        /// <param name="countRows">returns total items</param>
+        /// <param name="validFilter">filters for paginate</param>
+        /// <returns>return list item of type Item</returns>
         public List<Item> GetAllItems(ref int countRows, PaginationFilter validFilter) {
             IDbConnection connection = dBAdapter.GetConnection();
             try
