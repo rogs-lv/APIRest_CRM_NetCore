@@ -4,6 +4,7 @@ using CRM.Helpers;
 using CRM.Models;
 using CRM.Service.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,12 +17,18 @@ namespace CRM.Service
 {
     public class AuthenticateService : IAuthenticateService
     {
-        private LoginDAO loginDAO;
+        private readonly LoginDAO loginDAO;
         private readonly IConfiguration config;
         private readonly AppSettings _appSettings;
-        public AuthenticateService(IConfiguration _config, IOptions<AppSettings> appSettings) {
+        /// <summary>
+        /// Constructor of athenticate services
+        /// </summary>
+        /// <param name="_config">Instance of configuration</param>
+        /// <param name="appSettings">Instance of configuration (second option to get values of appsettings.json)</param>
+        /// <param name="_loginDAO">Intance of class loginDAO</param>
+        public AuthenticateService(IConfiguration _config, IOptions<AppSettings> appSettings, LoginDAO _loginDAO) {
             this.config = _config;
-            this.loginDAO = new LoginDAO(_config);
+            this.loginDAO = _loginDAO;
             this._appSettings = appSettings.Value;
         }
         /// <summary>

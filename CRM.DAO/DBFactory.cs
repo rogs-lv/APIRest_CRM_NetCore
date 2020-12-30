@@ -15,7 +15,7 @@ namespace CRM.DAO
         /// <param name="dbType">type database</param>
         /// <param name="config">intance of configuration</param>
         /// <returns></returns>
-        public static IDBAdapter GetDBAdapter(DBType dbType, IConfiguration config) {
+        public static IDBAdapter GetDBAdapter(DBType dbType) {
             switch (dbType)
             {
                 case DBType.Hana:
@@ -23,7 +23,7 @@ namespace CRM.DAO
                 case DBType.MySQL:
                     return new MySQLDBAdapater();
                 case DBType.SQLServer:
-                    return new SQLDBAdapter();
+                    return null; // new SQLDBAdapter();
                 default:
                     throw new SystemException("Database type not supported");
             }
@@ -38,9 +38,9 @@ namespace CRM.DAO
             {
                 string defaultDBClass = config.GetSection("AppSettings:dbClass").Value;
                 Type type = Type.GetType(defaultDBClass);
-                return (IDBAdapter)Activator.CreateInstance(type);
+                return (IDBAdapter)Activator.CreateInstance(type, config);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

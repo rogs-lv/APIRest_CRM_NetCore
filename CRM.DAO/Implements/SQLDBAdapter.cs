@@ -10,19 +10,23 @@ namespace CRM.DAO.Implements
 {
     public class SQLDBAdapter : IDBAdapter
     {
+        private readonly IConfiguration _config;
+        public SQLDBAdapter(IConfiguration config) {
+            this._config = config;
+        }
         /// <summary>
         /// Returns connection with open status
         /// </summary>
         /// <returns></returns>
-        public IDbConnection GetConnection(string strConnection) {
+        public IDbConnection GetConnection() {
             try
             {
-                // String connectionString = CreateConnectionString();
-                DbConnection connection = new SqlConnection(strConnection);
+                String connectionString = CreateConnectionString();
+                DbConnection connection = new SqlConnection(connectionString);
                 connection.Open();
                 return connection;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -32,7 +36,7 @@ namespace CRM.DAO.Implements
         /// </summary>
         /// <returns></returns>
         private string CreateConnectionString() {
-            return ""; //this.conf.GetConnectionString("SQLServer");
+            return this._config.GetConnectionString("SQLServer");
         }
     }
 }

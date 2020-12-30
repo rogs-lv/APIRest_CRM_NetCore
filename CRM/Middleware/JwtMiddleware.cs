@@ -44,7 +44,7 @@ namespace CRM.Middleware
                     ClockSkew = TimeSpan.Zero // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                 }, out SecurityToken validateToken);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

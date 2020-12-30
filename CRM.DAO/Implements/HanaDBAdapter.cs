@@ -7,7 +7,7 @@ namespace CRM.DAO.Implements
 {
     public class HanaDBAdapter : IDBAdapter
     {
-        public IDbConnection GetConnection(string strConnection) {
+        public IDbConnection GetConnection() {
             return null;
         }
     }

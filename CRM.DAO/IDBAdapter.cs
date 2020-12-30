@@ -7,6 +7,6 @@ namespace CRM.DAO
 {
     public interface IDBAdapter
     {
-        IDbConnection GetConnection(string strConnection);
+        IDbConnection GetConnection();
     }
 }

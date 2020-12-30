@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CRM.Models;
+﻿using CRM.Models;
 using CRM.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CRM.Controllers
 {
@@ -24,8 +21,8 @@ namespace CRM.Controllers
         [ProducesResponseType(typeof(AuthenticateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Login([FromBody]AuthenticateRequest user) {
-            AuthenticateResponse response = auth.Authenticate(user);
-            if (!string.IsNullOrEmpty(response.Token))
+            var response = auth.Authenticate(user);
+            if (response != null)
                 return Ok(response);
             else
                 return NotFound("El usuario o contraseña son incorrectos");

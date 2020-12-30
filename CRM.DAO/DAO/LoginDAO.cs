@@ -5,38 +5,48 @@ using System;
 using System.Linq;
 using System.Data;
 using CRM.Entity;
+using Microsoft.Extensions.Logging;
 
 namespace CRM.DAO.DAO
 {
     public class LoginDAO
     {
-        //private readonly IConfiguration config;
         IDBAdapter dBAdapter;
-        private readonly string strConnection;
-        public LoginDAO(IConfiguration _config) {
-            //config      = _config;
+        private readonly ILogger<LoginDAO> _logger;
+        /// <summary>
+        /// Constructor class LoginDAO
+        /// </summary>
+        /// <param name="_config">Instance of configuration</param>
+        /// <param name="logger">Instance Ilogger specifying the type class</param>
+        public LoginDAO(IConfiguration _config, ILogger<LoginDAO> logger) {
+            _logger         = logger;
             dBAdapter       = DBFactory.GetDefaultDBAdapter(_config);
-            strConnection   = _config.GetConnectionString("SQLServer");
         }
         /// <summary>
         /// Returns data user if exist in database
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="user">Data of the user who made the request</param>
+        /// <returns>Class type User</returns>
         public User Login(AuthenticateRequest user) {
-            IDbConnection connection = dBAdapter.GetConnection(strConnection);
+            IDbConnection connection = dBAdapter.GetConnection();
             try
             {
-                User userLogin = connection.Query<User>($"EXEC \"IDS_LoginPrueba\" '{user.UserName}','{user.Password}'").FirstOrDefault();
+                string storeProcedure = "IDS_LoginPrueba";
+                User userLogin = connection.Query<User>(
+                        storeProcedure, 
+                        new { Usuario = $"{user.UserName}", Password = $"{user.Password}" },
+                        commandType: CommandType.StoredProcedure)
+                    .FirstOrDefault();
                 return userLogin;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return null;
             }
             finally
             {
-                if (connection != null)
+                if (connection.State == ConnectionState.Open)
                 {
                     connection.Close();
                     connection.Dispose();
